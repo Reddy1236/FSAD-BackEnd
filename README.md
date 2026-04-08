@@ -1,36 +1,85 @@
-# Peer Review Backend (Spring Boot + MySQL)
+# Student Peer Review Backend
 
-## 1) Create DB from MySQL Workbench
-Open MySQL Workbench and run:
+Backend API for the Student Peer Review and Collaboration Platform, built with Spring Boot.
 
-`database/mysql-workbench-setup.sql`
+## Tech Stack
+- Java 21
+- Spring Boot 3
+- Spring Web
+- Spring Data JPA
+- MySQL for local development
+- Optional PostgreSQL-style environment variables for deployment
 
-## 2) Configure credentials
-Edit:
+## Features
+- Authentication endpoints
+- Project management APIs
+- Peer review and reply APIs
+- Reviewer assignment flows
+- Teacher decision workflows
+- Activity and notification data handling
 
-`src/main/resources/application.properties`
+## Prerequisites
+- Java 21
+- Maven 3.9 or later
+- MySQL 8 or later
 
-Update one of these options:
-- Use root account: set `spring.datasource.username=root` and your password.
-- Use dedicated account: set `spring.datasource.username=peerreview_user` and `spring.datasource.password=peerreview_pass`.
+## Database Setup
 
-## 3) Run backend
-Prerequisite: Maven installed locally.
+Run the SQL script in MySQL Workbench or the MySQL CLI:
+
+```text
+database/mysql-workbench-setup.sql
+```
+
+## Configuration
+
+Update environment variables or edit `src/main/resources/application.properties` for local development.
+
+Recommended local values:
+
+```properties
+DB_URL=jdbc:mysql://127.0.0.1:3306/peer_review_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+DB_USER=root
+DB_PASS=your_mysql_password
+DB_DRIVER=com.mysql.cj.jdbc.Driver
+DB_DIALECT=org.hibernate.dialect.MySQLDialect
+PORT=8080
+```
+
+## Run Locally
 
 ```bash
-cd /Users/avinashreddypadala/Desktop/Peer\ Review/peer-review-backend
 mvn spring-boot:run
 ```
 
-Backend runs on: `http://localhost:8080`
+The API starts on [http://localhost:8080](http://localhost:8080).
 
-## 4) API quick test
-- GET `http://localhost:8080/api/projects`
-- POST `http://localhost:8080/api/auth/register`
-- POST `http://localhost:8080/api/auth/login`
-- GET `http://localhost:8080/api/projects/1/reviews`
-- POST `http://localhost:8080/api/projects/1/reviews`
+## Build
 
-## 5) Connect from frontend
-Your Vite app can call the backend at `http://localhost:8080/api`.
-CORS for `http://localhost:5173` is already enabled.
+```bash
+mvn clean package
+```
+
+## Docker
+
+```bash
+docker build -t student-peer-review-backend .
+docker run -p 8080:8080 student-peer-review-backend
+```
+
+## API Quick Checks
+- `GET /api/projects`
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `GET /api/projects/{projectId}/reviews`
+- `POST /api/projects/{projectId}/reviews`
+
+## Frontend Connection
+
+The frontend can connect to this backend using:
+
+```text
+http://localhost:8080/api
+```
+
+CORS is already enabled for common local Vite development origins.
